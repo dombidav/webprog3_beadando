@@ -1,0 +1,13 @@
+CREATE USER 'wp3_hl5u4v'@'%'
+    IDENTIFIED VIA mysql_native_password
+    USING '***';
+GRANT USAGE ON *.* TO 'wp3_hl5u4v'@'%'
+    REQUIRE NONE WITH
+        MAX_QUERIES_PER_HOUR 0
+        MAX_CONNECTIONS_PER_HOUR 0
+        MAX_UPDATES_PER_HOUR 0
+        MAX_USER_CONNECTIONS 0;
+
+CREATE DATABASE IF NOT EXISTS `wp3_hl5u4v`;
+
+GRANT ALL PRIVILEGES ON `wp3\_hl5u4v`.* TO 'wp3_hl5u4v'@'%';
