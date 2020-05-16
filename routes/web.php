@@ -17,6 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 Route::get('projects', 'ProjectController@index')->name('project');
 Route::get('project/{id}', 'ProjectController@index')->name('project')->where('id', '[0-9]+');
 Route::get('project/create', 'ProjectController@create')->name('project.create');
