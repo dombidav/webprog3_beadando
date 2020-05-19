@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Productivity Dashboard</title>
+    <title>{{ $page_title ?? 'Productivity Dashboard' }}</title>
 
     <!-- Scripts -->
     {{--    <script src="{{ asset('js/app.js') }}"></script>--}}
@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}"/>
+    @stack('style')
 
 </head>
 <body>
@@ -69,23 +70,25 @@
                             </li>
                         @endif
                     @else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->username }} <span class="caret"></span>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                      style="display: none;">
-                                    @csrf
-                                </form>
+                        <li class="nav-item mr-2">
+                            <button type="button" class="btn btn-outline-primary">
+                                Notifications <span class="badge badge-success">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item mr-2">
+                            <button type="button" class="btn btn-outline-primary">
+                                Messages <span class="badge badge-warning">2</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <button class="btn btn-primary " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ Auth::user()->username }} <i class="fas fa-chevron-circle-down ml-2"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <a href="{{ route('user.profile') }}" class="dropdown-item" type="button">Profile</a>
+                                    <a href="{{ route('logout') }}" class="dropdown-item" type="button">Logout</a>
+                                </div>
                             </div>
                         </li>
                     @endguest
@@ -96,8 +99,6 @@
 
     <div class="wrapper">
         @auth
-            <div id="sidebar-detect">
-            </div>
             <nav id="sidebar">
                 <!-- Sidebar Header -->
                 <div class="sidebar-header">
@@ -106,17 +107,18 @@
 
                 <!-- Sidebar Links -->
                 <ul class="list-unstyled components">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><!-- Link with dropdown items -->
-                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
+                    <li class="active"><a href="#">Home <<</a></li>
+                    <li>
+                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Projects</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu">
-                            <li><a href="#">Page</a></li>
-                            <li><a href="#">Page</a></li>
-                            <li><a href="#">Page</a></li>
+                            <li><a href="#">New</a></li>
+                            <li><a href="#">Project1</a></li>
+                            <li><a href="#">Project2</a></li>
+                            <li><a href="#">See all</a></li>
                         </ul>
-                    <li><a href="#">Portfolio</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Calendar</a></li>
+                    <li><a href="#">Tasks</a></li>
+                    <li><a href="#">Contacts</a></li>
                 </ul>
             </nav>
         @endauth

@@ -19,6 +19,8 @@ class CreateTasksTable extends Migration
             $table->bigInteger('owner_id');
             $table->string('title');
             $table->text('content')->nullable();
+            $table->integer('status')->default(0);
+            $table->integer('row')->default(0);
             $table->timestamp('completed')->nullable();
             $table->timestamp('deadline')->nullable();
             $table->timestamps();

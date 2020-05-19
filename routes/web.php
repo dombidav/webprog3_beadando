@@ -16,11 +16,18 @@ Route::get('/', 'HomeController@index')->name('main');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('home', 'HomeController@index')->name('home');
+
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+
+Route::get('user/profile', 'UserController@profile')->name('user.profile');
+Route::get('user/profile/edit', 'UserController@edit')->name('user.edit');
+Route::put('user/profile/update', 'UserController@update')->name('user.update');
+
 Route::get('projects', 'ProjectController@index')->name('project');
-Route::get('project/{id}', 'ProjectController@index')->name('project')->where('id', '[0-9]+');
+Route::get('project/{id}', 'ProjectController@show')->name('project.show')->where('id', '[0-9]+');
 Route::get('project/create', 'ProjectController@create')->name('project.create');
 Route::post('project/create', 'ProjectController@store')->name('project.store');
-Route::get('project/edit/{id}', 'ProjectController@create')->name('project.edit')->where('id', '[0-9]+');
+Route::get('project/edit/{id}', 'ProjectController@edit')->name('project.edit')->where('id', '[0-9]+');
 Route::put('project/edit/{id}', 'ProjectController@update')->name('project.update')->where('id', '[0-9]+');
 Route::get('project/delete/{id}', 'ProjectController@delete')->name('project.delete')->where('id', '[0-9]+');

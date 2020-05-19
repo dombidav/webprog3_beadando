@@ -18,6 +18,7 @@ class CreateProjectsTable extends Migration
             $table->bigInteger('owner_id');
             $table->string('name');
             $table->text('description')->nullable()->default('NULL');
+            $table->boolean('is_private')->default(0);
             $table->timestamp('completed')->nullable();
             $table->timestamp('deadline')->nullable();
             $table->timestamps();
