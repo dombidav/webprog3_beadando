@@ -21,7 +21,7 @@ class Task extends Model
         return $this->belongsToMany('App\User');
     }
 
-    public function project(){
-        return $this->belongsTo('App\Project');
+    public function stack(){
+        return $this->belongsTo('App\Stack');
     }
 }

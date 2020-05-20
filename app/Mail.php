@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Message extends Model
+class Mail extends Model
 {
     /**
      * The attributes that are not mass assignable.
@@ -14,10 +14,10 @@ class Message extends Model
     protected $guarded = [];
 
     public function sender(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'sender_id');
     }
 
-    public function project(){
-        return $this->belongsTo('App\Project');
+    public function recipient(){
+        return $this->belongsTo('App\User', 'recipient_id');
     }
 }
