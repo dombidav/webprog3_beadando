@@ -38,7 +38,8 @@
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         @auth
             <div class="position-absolute">
-                <button type="button" id="sidebarCollapse"  class="btn btn-outline-primary"><i class="fas fa-list"></i></button>
+                <button type="button" id="sidebarCollapse" class="btn btn-outline-primary"><i class="fas fa-list"></i>
+                </button>
             </div>
         @endauth
         <div class="container">
@@ -77,16 +78,18 @@
                         </li>
                         <li class="nav-item mr-2">
                             <button type="button" class="btn btn-outline-primary">
-                                Messages <span class="badge badge-warning">2</span>
+                                Messages <span class="badge badge-danger">2</span>
                             </button>
                         </li>
                         <li class="nav-item">
                             <div class="dropdown">
-                                <button class="btn btn-primary " type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-primary " type="button" id="dropdownMenu2" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
                                     {{ Auth::user()->username }} <i class="fas fa-chevron-circle-down ml-2"></i>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <a href="{{ route('user.profile') }}" class="dropdown-item" type="button">Profile</a>
+                                    <a href="{{ route('user.profile') }}" class="dropdown-item"
+                                       type="button">Profile</a>
                                     <a href="{{ route('logout') }}" class="dropdown-item" type="button">Logout</a>
                                 </div>
                             </div>
@@ -107,18 +110,16 @@
 
                 <!-- Sidebar Links -->
                 <ul class="list-unstyled components">
-                    <li class="active"><a href="#">Home <<</a></li>
-                    <li>
+                    <li class="{{ ($active_page ?? '') == 'home' ? 'active' : '' }}"><a href="{{ route('main') }}">Home <<</a></li>
+                    <li class="{{ ($active_page ?? '') == 'project' ? 'active' : '' }}">
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Projects</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu">
-                            <li><a href="#">New</a></li>
-                            <li><a href="#">Project1</a></li>
-                            <li><a href="#">Project2</a></li>
-                            <li><a href="#">See all</a></li>
+                            <li><a href="{{ route('project.create') }}">New</a></li>
+                            <li><a href="{{ route('project') }}">See all</a></li>
                         </ul>
-                    <li><a href="#">Calendar</a></li>
-                    <li><a href="#">Tasks</a></li>
-                    <li><a href="#">Contacts</a></li>
+                    <li class="{{ ($active_page ?? '') == 'calendar' ? 'active' : '' }}"><a href="#">Calendar</a></li>
+                    <li class="{{ ($active_page ?? '') == 'task' ? 'active' : '' }}"><a href="#">Tasks</a></li>
+                    <li class="{{ ($active_page ?? '') == 'contact' ? 'active' : '' }}"><a href="#">Contacts</a></li>
                 </ul>
             </nav>
         @endauth
