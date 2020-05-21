@@ -20,6 +20,7 @@ class CreateMailsTable extends Migration
             $table->string('subject')->nullable();
             $table->text('content');
             $table->tinyInteger('priority');
+            $table->boolean('is_new')->default(true);
             $table->timestamps();
         });
     }

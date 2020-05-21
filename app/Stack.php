@@ -14,6 +14,11 @@ class Stack extends Model
     protected $guarded = [];
 
     public function project(){
-        $this->belongsTo('App\Project');
+        return $this->belongsTo('App\Project');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany('App\Task');
     }
 }

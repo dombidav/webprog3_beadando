@@ -23,6 +23,13 @@ Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name(
 Route::get('user/profile', 'UserController@profile')->name('user.profile');
 Route::get('user/profile/edit', 'UserController@edit')->name('user.edit');
 Route::put('user/profile/update', 'UserController@update')->name('user.update');
+Route::get('user/profile/show/{username}', 'UserController@show')->name('user.show');
+
+Route::get('user/mail', 'MailController@inbox')->name('user.inbox');
+
+Route::resource('mails', 'MailController')->except(['index']);
+Route::post('mails/inbox', 'MailController@indexInbox')->name('mails.index.inbox');
+Route::post('mails/sent', 'MailController@indexSent')->name('mails.index.sent');
 
 Route::get('projects', 'ProjectController@index')->name('project');
 Route::get('project/{id}', 'ProjectController@show')->name('project.show')->where('id', '[0-9]+');

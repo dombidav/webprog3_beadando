@@ -11,9 +11,9 @@
 
     <!-- Scripts -->
     {{--    <script src="{{ asset('js/app.js') }}"></script>--}}
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
             crossorigin="anonymous"></script>
@@ -72,14 +72,7 @@
                         @endif
                     @else
                         <li class="nav-item mr-2">
-                            <button type="button" class="btn btn-outline-primary">
-                                Notifications <span class="badge badge-success">0</span>
-                            </button>
-                        </li>
-                        <li class="nav-item mr-2">
-                            <button type="button" class="btn btn-outline-primary">
-                                Messages <span class="badge badge-danger">2</span>
-                            </button>
+
                         </li>
                         <li class="nav-item">
                             <div class="dropdown">
@@ -90,6 +83,9 @@
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                     <a href="{{ route('user.profile') }}" class="dropdown-item"
                                        type="button">Profile</a>
+                                    <a href="{{ route('user.inbox') }}" class="dropdown-item">
+                                        Messages <span id="mail_count" class="badge badge-{{Auth::user()->inbox_count() > 0 ? 'danger' : 'success'}}">{{ Auth::user()->inbox_count() }}</span>
+                                    </a>
                                     <a href="{{ route('logout') }}" class="dropdown-item" type="button">Logout</a>
                                 </div>
                             </div>
@@ -110,7 +106,7 @@
 
                 <!-- Sidebar Links -->
                 <ul class="list-unstyled components">
-                    <li class="{{ ($active_page ?? '') == 'home' ? 'active' : '' }}"><a href="{{ route('main') }}">Home <<</a></li>
+                    <li class="{{ ($active_page ?? '') == 'home' ? 'active' : '' }}"><a href="{{ route('main') }}">Home</a></li>
                     <li class="{{ ($active_page ?? '') == 'project' ? 'active' : '' }}">
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Projects</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu">
@@ -124,7 +120,7 @@
             </nav>
         @endauth
 
-        <div id="content" class="container mt-md-5">
+        <div id="content" class="container mt-md-3">
             <div>
                 @yield('content')
             </div>

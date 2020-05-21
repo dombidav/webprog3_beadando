@@ -34,14 +34,21 @@ class User extends Authenticatable
     }
 
     public function inbox(){
-        return $this->hasMany('App\Message', 'recipient_id');
+        return $this->hasMany('App\Mail', 'recipient_id');
     }
 
     public function sent(){
-        return $this->hasMany('App\Message', 'sender_id');
+        return $this->hasMany('App\Mail', 'sender_id');
     }
 
     public function files(){
         return $this->hasMany('App\File');
+    }
+
+    /**
+     * @return int
+     */
+    public function inbox_count(){
+        return $this->inbox->where('is_new', '==', 1)->count();
     }
 }

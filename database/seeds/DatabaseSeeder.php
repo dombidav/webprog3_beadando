@@ -13,24 +13,31 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         factory(\App\User::class, 50)->create();
-        factory(\App\Message::class, 100)->create();
         factory(\App\Project::class, 30)->create();
+        factory(\App\Mail::class, 100)->create();
+        factory(\App\Message::class, 100)->create();
         factory(\App\Log::class, 200)->create();
 
-        foreach (\App\Project::all() as $project){
-            for ($i = 0; $i < rand(5, 30); $i++){
-                $project->tasks()->save(factory(\App\Task::class)->make());
+        foreach (\App\Project::all() as $project) {
+            for ($i = 0; $i < rand(5, 30); $i++) {
+                $project->stacks()->save(factory(\App\Stack::class)->make());
             }
-            for($i = 0; $i < rand(1, 10); $i++){
+            for ($i = 0; $i < rand(1, 10); $i++) {
                 DB::table('user_project')->insert([
                     'user_id' => \App\User::all()->where('id', '<>', $project->owner())->random()->id,
                     'project_id' => $project->id
                 ]);
             }
+            /** @var \App\Stack $stack */
+            foreach ($project->stacks() as $stack) {
+                for ($i = 0; $i < rand(0, 10); $i++) {
+                    $stack->tasks()->save(factory(\App\Task::class)->make());
+                }
+            }
         }
 
-        foreach (\App\Task::all() as $task){
-            for ($i = 0; $i < rand(0, 5); $i++){
+        foreach (\App\Task::all() as $task) {
+            for ($i = 0; $i < rand(0, 5); $i++) {
                 DB::table('user_task')->insert([
                     'user_id' => \App\User::all()->where('id', '<>', $task->owner())->random()->id,
                     'task_id' => $task->id
