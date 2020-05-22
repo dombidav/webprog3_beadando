@@ -30,8 +30,6 @@
                         <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom"
                                 title="Reply" onclick="Reply();"><i class="fas fa-reply"></i></button>
                         <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom"
-                                title="Delete" onclick="Delete();"><i class="far fa-trash-alt"></i></button>
-                        <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom"
                                 title="Forward" onclick="Forward();"><i class="fas fa-share"></i></button>
                     </div>
                     <div class="btn-group" role="group" aria-label="Third group">
@@ -59,7 +57,7 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/mailing.js') }}"></script>
     <script src="{{ asset('js/mailing_ajax.js') }}"></script>
-    <script> $('button').tooltip({boundary: 'window'}); </script>
+    <script src="{{ asset('js/mailing.js') }}"></script>
+    <script>$('button').tooltip({boundary: 'window'}); </script>
 @endpush

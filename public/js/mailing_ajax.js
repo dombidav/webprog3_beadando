@@ -1,9 +1,9 @@
-folder = "";
-activeMail = "";
-ajax_list = "";
-ajax_mail = "";
-user = "";
-csrf = "";
+let folder = "";
+let activeMail = "";
+let ajax_list = "";
+let ajax_mail = "";
+let username = "";
+let csrf = "";
 
 $( document ).ready(function() {
     ajax_list = $('#ajax_list');
@@ -19,7 +19,7 @@ $( document ).ready(function() {
 function ajax_refresh_list() {
 
     $.ajax({
-        url: '/mails/' + folder.val(),
+        url: '/mailing/' + folder.val(),
         dataType: 'text',
         type: 'post',
         contentType: 'application/x-www-form-urlencoded',
@@ -56,6 +56,11 @@ function ajax_refresh_content() {
             ajax_mail.html( jqXhr.responseText );
         }
     });
+}
+
+function empty_content() {
+    ajax_mail.html( '' );
+    $('#mail_count').html($('#mail_count_ajax').val());
 }
 
 function selectMail(id) {

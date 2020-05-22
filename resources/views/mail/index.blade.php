@@ -7,11 +7,11 @@
 
 @foreach($mails as $mail)
     <div class="row border">
-        <a onclick="selectMail({{ $mail->id }})" class="btn btn-block {{ $mail->id == $selected ? 'btn-primary' : ($mail->is_new ? 'btn-outline-warning' : 'btn-light') }}">
+        <a onclick="selectMail({{ $mail->id }})" class="btn btn-block {{ $mail->id == $selected ? 'btn-primary' : (($show_new && $mail->is_new) ? 'btn-outline-warning' : 'btn-light') }}">
             <div class="col">
                 <div class="row">
                     <div class="col-7">
-                        <h5 class="text-left text-nowrap text-truncate {{ $mail->id == $selected ? 'text-white' : '' }}">{!! $mail->is_new ? '<i class="text-warning fas fa-exclamation-circle"></i> ' : '' !!}{{ $mail->sender->full_name }}</h5>
+                        <h5 class="text-left text-nowrap text-truncate {{ $mail->id == $selected ? 'text-white' : '' }}">{!! ($show_new && $mail->is_new) ? '<i class="text-warning fas fa-exclamation-circle"></i> ' : '' !!}{{ $mail->sender->full_name }}</h5>
                     </div>
                 </div>
                 <div class="row">

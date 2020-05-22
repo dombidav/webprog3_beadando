@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Mail;
 use App\User;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Psy\Util\Str;
 
 class MailController extends Controller
@@ -15,7 +20,7 @@ class MailController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function indexInbox(Request $request)
     {
@@ -25,82 +30,88 @@ class MailController extends Controller
         $mails = $user->inbox;
         return view('mail.index', [
             'mails' => $mails->sortByDesc('is_new')->sortByDesc('priority')->sortByDesc('created_at'),
-            'selected' => $request->get('selected')
+            'selected' => $request->get('selected'),
+            'show_new' => true
         ]);
     }
     public function indexSent(Request $request)
     {
         /** @var User $user */
         $user = User::where('username', '=', $request->get('username'))->first();
-        return view('mail.index', ['mails' => $user->sent]);
+        /** @var Collection $mails */
+        $mails = $user->sent;
+        return view('mail.index', [
+            'mails' => $mails->sortByDesc('is_new')->sortByDesc('priority')->sortByDesc('created_at'),
+            'selected' => $request->get('selected'),
+            'show_new' => false
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Factory|Response|View
      */
     public function create()
     {
-        //
+        if(\request('action') != null){
+            $mail = Mail::find(\request('mail'));
+            if(\request('action') == 're'){
+                return view('mail.create', ['recipient' => $mail->sender->username, 'subject' => 'Re:'.$mail->subject, 'content' => $mail->content]);
+            }else{
+                return view('mail.create', ['subject' => 'Fwd:'.$mail->subject, 'content' => $mail->content]);
+            }
+        }
+        return view('mail.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return RedirectResponse|Response|Redirector
      */
     public function store(Request $request)
     {
-        //
+        foreach (explode(',', $request->get('recipient')) as $recipient){
+            $mail = new Mail();
+            $mail->sender_id = User::where('username', '=', $request->get('sender'))->get('id')[0]->id;
+            $mail->recipient_id = User::where('username', '=', $recipient)->get('id')[0]->id;
+            $mail->subject = $request->get('subject');
+            $mail->content = $request->get('content');
+            $mail->priority = 4;
+            $mail->save();
+        }
+        return redirect(route('user.inbox'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Mail  $mail
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param Mail $mail
+     * @return Factory|View
      */
     public function show(Mail $mail)
     {
-        $mail->is_new = false;
-        $mail->save();
+        if(Auth::user() == $mail->recipient){
+            $mail->is_new = false;
+            $mail->save();
+        }
         return view('mail.show', ['mail' => $mail]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Mail  $mail
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Mail $mail)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Mail  $mail
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Mail $mail)
-    {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Mail  $mail
-     * @return \Illuminate\Http\Response
+     * @param Mail $mail
+     * @return RedirectResponse|Response
      */
     public function destroy(Mail $mail)
     {
-        //
+        try {
+            $mail->delete();
+        } catch (\Exception $e) {}
+        return redirect()->route('user.inbox');
     }
 
     public function inbox(User $user){

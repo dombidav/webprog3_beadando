@@ -3,9 +3,17 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @method static Builder where(string $string, string $string1, $get)
+ * @method static User|Collection<User> find()
+ * @property User inbox
+ * @property Collection<Mail> sent
+ */
 class User extends Authenticatable
 {
     use Notifiable;

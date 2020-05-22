@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use mysql_xdevapi\Exception;
+use mysql_xdevapi\Exception as ExceptionAlias;
 
 class UserController extends Controller
 {
@@ -129,5 +131,25 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    public function search(string $name = ''){
+        if($name == '' || strpos($name, '=') != -1){
+            if(\request('term')){
+                $name = \request('term');
+            }
+        }
+        $query = User::query()->where('username', 'like', "$name%");
+        if($query->count() == 0){
+            $query = User::query()->where('username', 'like', "%$name%");
+        }
+        $suggestions['suggestions'] = [];
+        $result = $query->orderBy('id')->limit(5)->get('username');
+        foreach ($result as $user){
+            try {
+                array_push($suggestions['suggestions'], $user->username);
+            }catch (Exception $e){}
+        }
+        return json_encode($suggestions['suggestions']); //json_encode($suggestions);
     }
 }
