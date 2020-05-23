@@ -4,17 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index()
     {
-        //
+        if(\request('p') != null){
+
+        }else if(Auth::user()->auth == 9){
+            return view('task.index_admin', ['user' => Auth::user(), 'tasks' => Task::query()->paginate(20)]);
+        }else{
+            abort(403, 'Task view only available for administrators');
+        }
     }
 
     /**

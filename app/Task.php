@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Task extends Model
 {
@@ -13,6 +14,11 @@ class Task extends Model
      */
     protected $guarded = [];
 
+    public static function tasksAssigned(User $user, int $project_id)
+    {
+        return DB::table('tasks')->where('user_id', '=', $user->id)->where('project_id', '=', $project_id);
+    }
+
     public function owner(){
         return $this->belongsTo('App\User');
     }
@@ -21,7 +27,7 @@ class Task extends Model
         return $this->belongsToMany('App\User');
     }
 
-    public function stack(){
-        return $this->belongsTo('App\Stack');
+    public function project(){
+        return $this->belongsTo('App\Project');
     }
 }

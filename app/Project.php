@@ -2,8 +2,19 @@
 
 namespace App;
 
+use DateTime;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int user_id
+ * @property string description
+ * @property string name
+ * @property string is_private
+ * @property DateTime completed
+ * @property DateTime deadline
+ * @property int id
+ */
 class Project extends Model
 {
     public $incrementing = false;
@@ -19,11 +30,14 @@ class Project extends Model
         return $this->belongsToMany('App\User', 'user_project', 'project_id', 'user_id');
     }
 
-    public function stacks(){
-        return $this->hasMany('App\Stack');
+    public function tasks(){
+        return $this->hasMany('App\Task');
     }
 
+    /**
+     * @return User
+     */
     public function owner(){
-        return $this->belongsTo('App\User');
+        return User::query()->where('id', '=', $this->user_id)->first(); //$this->belongsTo('App\User');
     }
 }

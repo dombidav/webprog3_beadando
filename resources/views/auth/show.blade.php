@@ -120,3 +120,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/tooltip.js') }}"></script>
+@endpush

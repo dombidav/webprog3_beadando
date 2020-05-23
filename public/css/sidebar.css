@@ -13,46 +13,41 @@
 #sidebar.active {
   margin-left: -250px;
 }
-
-a[data-toggle=collapse] {
+#sidebar a[data-toggle=collapse] {
   position: relative;
 }
-
-.dropdown-toggle::after {
+#sidebar .dropdown-toggle::after {
   display: block;
   position: absolute;
   top: 50%;
   right: 20px;
   transform: translateY(-50%);
 }
-
 @media (max-width: 768px) {
-  #sidebar {
+  #sidebar #sidebar {
     margin-left: -250px;
   }
-  #sidebar.active {
+  #sidebar #sidebar.active {
     margin-left: 0;
   }
 }
-body {
+#sidebar body {
   font-family: "Poppins", sans-serif;
   background: #fafafa;
 }
-
-p {
+#sidebar p {
   font-family: "Poppins", sans-serif;
   font-size: 1.1em;
   font-weight: 300;
   line-height: 1.7em;
   color: #999;
 }
-
-a {
+#sidebar a {
   color: inherit;
   text-decoration: none;
   transition: all 0.3s;
 }
-a:hover, a:focus {
+#sidebar a:hover, #sidebar a:focus {
   color: inherit;
   text-decoration: none;
   transition: all 0.3s;

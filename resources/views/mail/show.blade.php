@@ -25,8 +25,6 @@
             $Parsedown = new Parsedown();
             $Parsedown->setBreaksEnabled(true)->setSafeMode(true)->setMarkupEscaped(true);
             echo $Parsedown->text($mail->content);
-            //$Parsedown->setSafeMode(true);
-            //echo str_replace('<', '<br /><', $Parsedown->text($mail->content));
         @endphp
     </div>
 </div>

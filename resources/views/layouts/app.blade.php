@@ -29,6 +29,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('css/global.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}"/>
     @stack('style')
 
@@ -110,8 +111,8 @@
                     <li class="{{ ($active_page ?? '') == 'project' ? 'active' : '' }}">
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Projects</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu">
-                            <li><a href="{{ route('project.create') }}">New</a></li>
-                            <li><a href="{{ route('project') }}">See all</a></li>
+                            <li><a href="{{ route('projects.create') }}">New</a></li>
+                            <li><a href="{{ route('projects.index') }}">See all</a></li>
                         </ul>
                     <li class="{{ ($active_page ?? '') == 'calendar' ? 'active' : '' }}"><a href="#">Calendar</a></li>
                     <li class="{{ ($active_page ?? '') == 'task' ? 'active' : '' }}"><a href="#">Tasks</a></li>

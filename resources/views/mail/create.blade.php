@@ -1,4 +1,4 @@
-@extends('layouts.app', ['active_page' => 'profile', 'page_title' => 'Edit profile'])
+@extends('layouts.app', ['active_page' => 'mail', 'page_title' => 'Create mail'])
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('css/mailing.css') }}"/>

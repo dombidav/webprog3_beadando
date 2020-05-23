@@ -13,6 +13,8 @@ use Illuminate\Notifications\Notifiable;
  * @method static User|Collection<User> find()
  * @property User inbox
  * @property Collection<Mail> sent
+ * @property int|null auth
+ * @property Collection<Project> projects
  */
 class User extends Authenticatable
 {
@@ -34,7 +36,7 @@ class User extends Authenticatable
     ];
 
     public function tasks(){
-        return $this->belongsToMany('App\Task');
+        return $this->belongsToMany('App\Task', 'user_task');
     }
 
     public function projects(){

@@ -33,10 +33,5 @@ Route::resource('mails', 'MailController')->except(['index']);
 Route::post('mailing/inbox', 'MailController@indexInbox')->name('mails.index.inbox');
 Route::post('mailing/sent', 'MailController@indexSent')->name('mails.index.sent');
 
-Route::get('projects', 'ProjectController@index')->name('project');
-Route::get('project/{id}', 'ProjectController@show')->name('project.show')->where('id', '[0-9]+');
-Route::get('project/create', 'ProjectController@create')->name('project.create');
-Route::post('project/create', 'ProjectController@store')->name('project.store');
-Route::get('project/edit/{id}', 'ProjectController@edit')->name('project.edit')->where('id', '[0-9]+');
-Route::put('project/edit/{id}', 'ProjectController@update')->name('project.update')->where('id', '[0-9]+');
-Route::get('project/delete/{id}', 'ProjectController@delete')->name('project.delete')->where('id', '[0-9]+');
+Route::resource('projects', 'ProjectController');
+Route::resource('tasks', 'TaskController');
