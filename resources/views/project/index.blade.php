@@ -35,7 +35,7 @@
                     <div class="card mx-auto ">
                         <div class="card-body card-fix">
                             <h5 class="card-title">{{ wordwrap($project->name) }}</h5>
-                            <p class="card-text">Deadline: {{ $project->deadline ?? 'NOT SET' }}</p>
+                            <p class="card-text">Deadline: {{ $project->deadline ?? '--' }}</p>
                             <a href="{{ route('projects.show', $project->id) }}" class="btn btn-primary">Open</a>
                         </div>
                     </div>

@@ -2,12 +2,14 @@
 
 namespace App;
 
+use App\Helpers\LINQ;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
- * @method static find(int $int)
+ * @method static Task find(int $int)
  * @property Project project
  * @property int id
  * @property int user_id
@@ -53,6 +55,25 @@ class Task extends Model
             $i++;
         }
         return $i;
+    }
+
+    public static function createFrom(array $all, array $and = [], array $except = []) : Task
+    {
+        $array = [];
+        foreach ($all as $key => $value) {
+            if(Str::startsWith($key, 'new_') && LINQ::from($except)->notContains($key)){
+                $array[Str::substr($key, 4)] = $value;
+            }
+        }
+        foreach ($and as $key=>$value){
+            $array[$key] = $value;
+        }
+        return new Task($array);
+    }
+
+    public static function last()
+    {
+        return Task::query()->orderBy('id', 'DESC')->limit(1)->get()->first();
     }
 
     public function users(){

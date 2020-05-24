@@ -34,6 +34,10 @@ Route::post('mailing/inbox', 'MailController@indexInbox')->name('mails.index.inb
 Route::post('mailing/sent', 'MailController@indexSent')->name('mails.index.sent');
 
 Route::resource('projects', 'ProjectController');
+Route::delete('p/members', 'ProjectController@memberRemove')->name('projects.members.remove');
+Route::post('p/members', 'ProjectController@memberAdd')->name('projects.members.add');
+
 Route::resource('tasks', 'TaskController');
+Route::get('projects/{project_id}/export', 'ProjectController@export')->name('projects.export')->where('task_id', '[0-9]+');
 Route::get('api/t/{id}', 'TaskController@apiShow')->name('api.task.show');
 Route::put('api/t/update', 'TaskController@update')->name('api.task.update');

@@ -12,7 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Whoops\Exception\Formatter;
 
 class TaskController extends Controller
 {
@@ -90,7 +92,6 @@ class TaskController extends Controller
                     }
                 }
             }
-            //$tasks = LINQ::paginate($tasks);
             return view('task.index', ['tasks' => $tasks, 'project' => Project::find(request('p'))]);
         } else if (Auth::user()->auth == 9) {
             return view('task.index_admin', ['user' => Auth::user(), 'tasks' => Task::query()->paginate(20)]);
@@ -156,27 +157,35 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task = null)
     {
-        if ($task == null)
-            $task = Task::find($request->get('task_id'));
-        if(Auth::user()->auth != 9 && $task->owner()->id != Auth::id())
-            abort(403, 'Only the owner can edit this item');
-        if ($request->get('new_title'))
-            $task->title = $request->get('new_title');
-        if ($request->get('new_content') !== null)
-            $task->content = $request->get('new_content');
-        if ($request->get('new_deadline') !== null)
-            $task->deadline = $request->get('new_deadline');
-        if ($request->get('new_status') !== null)
-            $task->status = $request->get('new_status');
-        $task->save();
-
-        foreach (explode(',', $request->get('new_responsibles')) as $person) {
-            $user = User::name(trim($person, ', '));
-            DB::table('user_task')->where('task_id', '=', $task->id)->delete();
-            DB::table('user_task')->insert([
-                'user_id' => $user->id,
-                'task_id' => $task->id
+        if ($request->get('task_id') == -1) {
+            $task = Task::createFrom($request->all(), ['user_id' => Auth::id(), 'project_id' => $request->get('project_id')], ['new_responsibles'])->save();
+        } else {
+            $request->validate([
+                'new_title' => 'required|max:250'
             ]);
+            if ($task == null)
+                $task = Task::find($request->get('task_id'));
+            if (Auth::user()->auth != 9 && $task->owner()->id != Auth::id())
+                abort(403, 'Only the owner can edit this item');
+            $task->title = $request->get('new_title');
+            if ($request->get('new_content') !== null)
+                $task->content = $request->get('new_content');
+            if ($request->get('new_deadline') !== null)
+                $task->deadline = $request->get('new_deadline');
+            if ($request->get('new_status') !== null)
+                $task->status = $request->get('new_status');
+            $task->save();
+        }
+        $task = Task::last();
+        if (Str::contains($request->get('new_responsibles'), ',')) {
+            foreach (explode(',', $request->get('new_responsibles')) as $person) {
+                $user = User::name(trim($person, ', '));
+                DB::table('user_task')->where('task_id', '=', $task->id)->delete();
+                DB::table('user_task')->insert([
+                    'user_id' => $user->id,
+                    'task_id' => $task->id
+                ]);
+            }
         }
 
         return redirect()->route('tasks.index', ['p' => $task->project->id]);
@@ -194,7 +203,7 @@ class TaskController extends Controller
         if ($task->owner()->id == Auth::id() || Auth::user()->auth == 9) {
             $temp = $task->project->id;
             $task->delete();
-            return redirect()->route('tasks.index', $temp);
+            return redirect()->route('tasks.index', ['p' => $temp]);
         } else
             abort(403, 'Only the owner can delete this item');
     }

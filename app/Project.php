@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\DB;
  * @property DateTime deadline
  * @property int id
  * @property Collection<Task> tasks
+ * @property Collection<User> users
+ * @method static Project find($project_id)
  */
 class Project extends Model
 {
@@ -51,6 +53,15 @@ class Project extends Model
             $i++;
         }
         return $i;
+    }
+
+
+    /**
+     * @return Project
+     */
+    public static function last()
+    {
+        return Project::query()->orderBy('id', 'DESC')->limit(1)->get()->first();
     }
 
     public function users(){

@@ -8,6 +8,7 @@
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('css/project.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/amsify.suggestags.css') }}"/>
 @endpush
 
 @section('content')
@@ -15,6 +16,7 @@
         <div class="row">
             @include('project.partial.descriptor', ['project' => $project])
             @include('project.partial.summary'   , ['project' => $project])
+            @include('project.partial.members'   , ['project' => $project])
         </div>
     </div>
 @endsection

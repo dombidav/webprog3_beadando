@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\LINQ;
 use App\Project;
 use App\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -51,11 +53,27 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $project = Project::create([
-            'name' => $request->get('input_name')
+        $project = new Project([
+            'name' => $request->get('new_name'),
+            'deadline' => $request->get('new_deadline'),
+            'user_id' => Auth::id(),
+            'description' => $request->get('new_content')
         ]);
         $project->save();
-        return redirect()->route('project.index');
+        $project = Project::last();
+        DB::table('user_project')->insert([
+            'user_id' => Auth::id(),
+            'project_id' => $project->id
+        ]);
+        if(Str::contains($request->get('new_responsibles'), ',')){
+            foreach (explode(',', $request->get('new_responsibles')) as $person){
+                DB::table('user_project')->insert([
+                    'user_id' => $user = User::name($person)->id,
+                    'project_id' => $project->id
+                ]);
+            }
+        }
+        return redirect()->route('projects.index');
     }
 
     /**
@@ -78,6 +96,50 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         return view('project.edit', ['project' => $project]);
+    }
+
+    public function memberRemove(Request $request){
+        $project = Project::find($request->get('project'));
+        $user = User::find($request->get('user'));
+        if($project->user_id == Auth::id() || Auth::user()->auth == 9){
+            if($user->id == Auth::id()){
+                abort(400, 'You are the owner of this project');
+            }else{
+                DB::table('user_project')->where('user_id', '=', $user->id)->where('project_id', '=', $project->id)->delete();
+                return redirect()->route('projects.show', $project->id);
+            }
+        }else{
+            abort(403, 'Only the owner can remove this person from the project');
+        }
+    }
+
+    public function memberAdd(Request $request){
+        $project = Project::find($request->get('project'));
+        if($project->user_id == Auth::id() || Auth::user()->auth == 9){
+            $request->validate(['new_member' => 'required']);
+            if(Str::contains($request->get('new_member'), ',')){
+                foreach (explode(',', $request->get('new_member')) as $user) {
+                    $user = User::name($user);
+                    if(DB::table('user_project')->where('user_id', '=', $user->id)->where('project_id', '=', $project->id)){
+                        DB::table('user_project')->insert([
+                            'user_id' => $user->id,
+                            'project_id' => $project->id
+                        ]);
+                    }
+                }
+            }else{
+                $user = User::name($request->get('new_member'));
+                if(DB::table('user_project')->where('user_id', '=', $user->id)->where('project_id', '=', $project->id)){
+                    DB::table('user_project')->insert([
+                        'user_id' => $user->id,
+                        'project_id' => $project->id
+                    ]);
+                }
+            }
+            return redirect()->route('projects.show', $project->id);
+        }else{
+            abort(403);
+        }
     }
 
     /**
@@ -103,6 +165,11 @@ class ProjectController extends Controller
             $project->deadline = $request->get('new_deadline');
         $project->save();
         return redirect()->route('projects.show', $project->id);
+    }
+
+    public function export($project_id){
+        $project = Project::find($project_id);
+        LINQ::from($project->tasks)->csv("{NOW}-$project->name")->download();
     }
 
     /**

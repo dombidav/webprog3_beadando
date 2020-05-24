@@ -14,21 +14,23 @@
 
                 <div class="col-md-4">
                     @php
-                        $diff = date_diff(date_create($project->deadline), date_create('now'));
-                        if($diff->d > 1)
-                            $d_time = $diff->format('%a d');
-                        else if($diff->d == 1)
-                            $d_time = $diff->format('%a d %h h');
-                        else if($diff->h > 9)
-                            $d_time = $diff->format('%h h');
-                        else if($diff->h > 0)
-                            $d_time = $diff->format('%h h %i m');
-                        else if($diff->i > 1)
-                            $d_time = $diff->format('%i m');
-                        else
-                            $d_time = 'less than a minute';
+                        if($project->deadline){
+                            $diff = date_diff(date_create($project->deadline), date_create('now'));
+                            if($diff->d > 1)
+                                $d_time = $diff->format('%a d');
+                            else if($diff->d == 1)
+                                $d_time = $diff->format('%a d %h h');
+                            else if($diff->h > 9)
+                                $d_time = $diff->format('%h h');
+                            else if($diff->h > 0)
+                                $d_time = $diff->format('%h h %i m');
+                            else if($diff->i > 1)
+                                $d_time = $diff->format('%i m');
+                            else
+                                $d_time = 'less than a minute';
+                        }
                     @endphp
-                    <p>{{ $d_time ?? '' }}</p>
+                    <p>{{ $d_time ?? 'Not set' }}</p>
                 </div>
                 <div class="col-md-4">
                     <p>{{ $project->deadline }}</p>
@@ -55,7 +57,6 @@
             </div>
             <div class="row mt-2">
                 <div class="col-md-4">
-                    <a class="btn btn-primary" href="{{ route('tasks.create', [ 'p' => $project->id]) }}">New Task</a>
                 </div>
                 <div class="col-md-4">
                 </div>
