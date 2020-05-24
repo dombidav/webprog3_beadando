@@ -37,6 +37,12 @@
                             <h5 class="card-title">{{ wordwrap($project->name) }}</h5>
                             <p class="card-text">Deadline: {{ $project->deadline ?? '--' }}</p>
                             <a href="{{ route('projects.show', $project->id) }}" class="btn btn-primary">Open</a>
+                            <form action="{{ route('projects.destroy', $project->id) }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <input type="hidden" id="project_id" name="project_id" value="{{ $project->id }}">
+                                <button type="submit" class="btn btn-danger mt-3">Delete</button>
+                            </form>
                         </div>
                     </div>
                 </div>

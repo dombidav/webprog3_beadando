@@ -78,7 +78,7 @@ class TaskController extends Controller
         /** @var Collection $tasks */
         if (\request('p') != null) {
             $tasks = Task::where('project_id', '=', \request('p'))->get();
-            if (\request('filter') != null) {
+            /*if (\request('filter') != null) {
                 foreach (\request('filter') as $filter) {
                     switch (explode(' ', $filter)[0]) {
                         case 'status':
@@ -91,7 +91,7 @@ class TaskController extends Controller
                             break;
                     }
                 }
-            }
+            }*/
             return view('task.index', ['tasks' => $tasks, 'project' => Project::find(request('p'))]);
         } else if (Auth::user()->auth == 9) {
             return view('task.index_admin', ['user' => Auth::user(), 'tasks' => Task::query()->paginate(20)]);

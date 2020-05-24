@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\JsonUtil;
 use App\Helpers\LINQ;
+use App\Helpers\TrelloProject;
 use App\Project;
 use App\User;
 use Illuminate\Contracts\View\Factory;
@@ -164,17 +166,15 @@ class ProjectController extends Controller
         LINQ::from($project->tasks)->csv("{NOW}-$project->name")->download();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Project $project
-     * @return \Illuminate\Http\RedirectResponse|Response
-     * @throws \Exception
-     */
-    public function destroy(Project $project)
+    public function destroy(Request $request)
     {
-        $project->delete();
-        return redirect()->route('project.index');
+        $project = Project::find($request->get('project_id'));
+        if($project->user_id == Auth::id() || Auth::user()->auth == 9){
+            $project->delete();
+            return redirect()->route('projects.index');
+        }else{
+            abort(403);
+        }
     }
 
     /**
@@ -206,13 +206,9 @@ class ProjectController extends Controller
 
     private function trello_create(Request $request)
     {
-        if($request->get('trello_code')){
-            dd('eh');
-        }else{
-            /** @var UploadedFile $file */
-            $file = $request->file('trello_json');
-            //$file->move(storage_path('upload/json/'), $file->getClientOriginalName()); //Igazából nem is kell tárolni...
-            dd($file);
-        }
+        /** @var UploadedFile $file */
+        $file = $request->file('trello_json');
+        Project::trello(new TrelloProject(JsonUtil::objectFrom($file)));
+        return redirect()->route('projects.index');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Helpers\TrelloProject;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -62,6 +63,30 @@ class Project extends Model
     public static function last()
     {
         return Project::query()->orderBy('id', 'DESC')->limit(1)->get()->first();
+    }
+
+    public static function trello(TrelloProject $trello)
+    {
+        $trello->project()->save();
+        $project = Project::last();
+        foreach ($trello->members as $key => $value){
+            if(User::name($value)){
+                DB::table('user_project')->insert([
+                    'user_id' => User::name($value)->id,
+                    'project_id' => $project->id
+                ]);
+            }
+        }
+        foreach ($trello->member_assoc as $pair){
+            $task = $pair['task'];
+            $task->project_id = $project->id;
+            $task->save();
+            $task = Task::last();
+            DB::table('user_task')->insert([
+                'user_id' => $pair['user']->id,
+                'task_id' => $task->id
+            ]);
+        }
     }
 
     public function users(){

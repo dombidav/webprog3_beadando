@@ -70,18 +70,15 @@
                     <input type="hidden" id="create_method" name="create_method" value="trello">
                     <div class="row mt-2">
                         <div class="col-md-5">
-                            <input type="text" id="trello_code" name="trello_code" class="form-control" placeholder="`https://trello.com/b/vXsYLRAJ` or just `vXsYLRAJ`">
-                        </div>
-                        <div class="col-md-2 text-center align-content-center align-items-center">
-                            <h3>OR</h3>
-                        </div>
-                        <div class="col-md-5">
                             <input type="file" id="trello_json" name="trello_json" class="form-control file" placeholder="`https://trello.com/b/vXsYLRAJ` or just `vXsYLRAJ`">
+                        </div>
+                        <div class="col text-center">
+                            <button type="submit" class="btn btn-primary">Create Project</button>
                         </div>
                     </div>
                     <div class="row mt2">
-                        <div class="col text-center">
-                            <button type="submit" class="btn btn-primary">Create Project</button>
+                        <div class="col">
+
                         </div>
                     </div>
                 </form>

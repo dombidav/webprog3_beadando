@@ -55,7 +55,9 @@
                         </td>
                         <td>
                             @foreach($task->users as $u)
-                                <a href="{{ route('user.show', $u->username) }}">{{ $u->username }}</a>,
+                                @if($u->id != $task->user_id)
+                                    <a href="{{ route('user.show', $u->username) }}">{{ $u->username }}</a>,
+                                @endif
                             @endforeach
                             <input type="hidden" id="{{ $task->id }}_responsibles"
                                    value="{{ \App\Task::userString($task) }}">

@@ -68,11 +68,15 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param \App\User $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
-    public function show(User $user)
+    public function show($user)
     {
-        //
+        $user = User::name($user);
+        if (Auth::check())
+            return view('auth.show', ['user' => $user]);
+        else
+            return view('auth.login');
     }
 
     /**

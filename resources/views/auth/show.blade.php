@@ -103,7 +103,7 @@
                                                                 {!! $project->description !!}
                                                             </div>
                                                             <div class="col-md-12 mt-md-3">
-                                                                <a href="{{ route('project.show', $project->id) }}" class="btn btn-block btn-outline-primary">See this project >></a>
+                                                                <a href="{{ route('projects.show', $project->id) }}" class="btn btn-block btn-outline-primary">See this project >></a>
                                                             </div>
                                                         </div>
                                                     @endforeach
