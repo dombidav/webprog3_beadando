@@ -49,7 +49,7 @@ class TrelloProject
             $this->status[$list->id] = $key;
         }
         foreach ($object->cards as $card) {
-            $user = User::name(array_values($this->members)[0]) ?? Auth::user();
+            $user = Auth::user();
             $task = new Task([
                 'title' => $card->name,
                 'user_id' => $user->id,
@@ -59,9 +59,15 @@ class TrelloProject
             ]);
             array_push($this->member_assoc, ['user' => $user, 'task' => $task]);
             foreach ($card->idMembers as $idMember) {
-                $idMember = User::name($this->members[$idMember]);
+                $name = $this->members[$idMember];
+                $idMember = User::name($name);
+                array_push($this->member_assoc, ['user' => Auth::user(), 'task' => $task]);
                 if ($idMember != null)
                     array_push($this->member_assoc, ['user' => $idMember, 'task' => $task]);
+                if(config('app.debug') == true && $idMember == null){
+                    $idMember = factory('App\User')->create(['username' => $name]);
+                    array_push($this->member_assoc, ['user' => $idMember, 'task' => $task]);
+                }
             }
             array_push($this->tasks, $task);
         }

@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\User::class, 50)->create();
+        factory(\App\User::class, 48)->create();
         factory(\App\Project::class, 30)->create();
         factory(\App\Mail::class, 100)->create();
         factory(\App\Message::class, 100)->create();
@@ -47,5 +47,16 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+
+        factory(\App\User::class)->create([
+            'username' => 'admin',
+            'full_name' => 'Site Admin',
+            'email' => 'admin@example.com',
+        ]);
+        factory(\App\User::class)->create([
+            'username' => 'user',
+            'full_name' => 'Normal User',
+            'email' => 'user@example.com',
+        ]);
     }
 }

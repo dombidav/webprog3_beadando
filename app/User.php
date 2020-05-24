@@ -49,6 +49,10 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Project', 'user_project');
     }
 
+    public function owned_projects(){
+        return $this->hasMany('App\Project');
+    }
+
     public function inbox(){
         return $this->hasMany('App\Mail', 'recipient_id');
     }

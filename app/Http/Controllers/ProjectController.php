@@ -35,7 +35,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return view('project.index', ['projects' => Auth::user()->projects()->paginate(5)]);
+        return view('project.index', ['owned'=> Auth::user()->owned_projects,'projects' => Auth::user()->projects()->paginate(5)]);
     }
 
     /**

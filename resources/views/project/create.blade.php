@@ -70,15 +70,36 @@
                     <input type="hidden" id="create_method" name="create_method" value="trello">
                     <div class="row mt-2">
                         <div class="col-md-5">
-                            <input type="file" id="trello_json" name="trello_json" class="form-control file" placeholder="`https://trello.com/b/vXsYLRAJ` or just `vXsYLRAJ`">
+                            <input type="file" id="trello_json" name="trello_json" class="form-control file"
+                                   placeholder="`https://trello.com/b/vXsYLRAJ` or just `vXsYLRAJ`">
                         </div>
                         <div class="col text-center">
                             <button type="submit" class="btn btn-primary">Create Project</button>
                         </div>
                     </div>
-                    <div class="row mt2">
+                    <div class="row mt-5">
                         <div class="col">
-
+                            <div class="card">
+                                <h5 class="card-header">Help</h5>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="card-text text-justify">You can quickly create projects from existing trello
+                                                boards by exporting it (Show Menu > Print and Export > Export as JSON),
+                                                however currently users are only added to the project and the tasks if
+                                                their trello username is the same as their username here.</p>
+                                            @if(config('app.debug') == true)
+                                                <p class="mt-5 text-danger">DEBUG: developer mode is enabled in the <em>`.env`</em>
+                                                    file. Every unknown username will be registered as new user with a
+                                                    default password and WILL BE added to the project as members.</p>
+                                            @endif
+                                        </div>
+                                        <div class="col">
+                                            <img src="{{ asset('images/trello-export-help.png') }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
