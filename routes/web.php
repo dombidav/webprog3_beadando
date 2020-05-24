@@ -20,10 +20,10 @@ Route::get('home', 'HomeController@index')->name('home');
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
-Route::get('user/profile', 'UserController@profile')->name('user.profile');
-Route::get('user/profile/edit', 'UserController@edit')->name('user.edit');
-Route::put('user/profile/update', 'UserController@update')->name('user.update');
-Route::get('user/profile/show/{username}', 'UserController@show')->name('user.show');
+Route::get('profile', 'UserController@profile')->name('user.profile');
+Route::get('profile/edit', 'UserController@edit')->name('user.edit');
+Route::put('profile/update', 'UserController@update')->name('user.update');
+Route::get('u/{username}', 'UserController@show')->name('user.show');
 Route::get('api/user/s/{name}', 'UserController@search')->name('api.user.search-url');
 Route::get('api/user/s', 'UserController@search')->name('api.user.search');
 
@@ -35,3 +35,5 @@ Route::post('mailing/sent', 'MailController@indexSent')->name('mails.index.sent'
 
 Route::resource('projects', 'ProjectController');
 Route::resource('tasks', 'TaskController');
+Route::get('api/t/{id}', 'TaskController@apiShow')->name('api.task.show');
+Route::put('api/t/update', 'TaskController@update')->name('api.task.update');

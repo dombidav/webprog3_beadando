@@ -11,10 +11,12 @@ use Illuminate\Notifications\Notifiable;
 /**
  * @method static Builder where(string $string, string $string1, $get)
  * @method static User|Collection<User> find()
+ * @method static find($user_id)
  * @property User inbox
  * @property Collection<Mail> sent
  * @property int|null auth
  * @property Collection<Project> projects
+ * @property string username
  */
 class User extends Authenticatable
 {
@@ -34,6 +36,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public static function name(string $str){
+        return User::where('username', '=', $str)->first();
+    }
 
     public function tasks(){
         return $this->belongsToMany('App\Task', 'user_task');

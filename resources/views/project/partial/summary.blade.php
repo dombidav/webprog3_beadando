@@ -50,7 +50,7 @@
                 </div>
                 <div class="col-md-4">
                     Assigned to me: <a
-                        href="{{ route('tasks.index', [ 'p' => $project->id, 'filter'=>['target me', 'status active']]) }}">{{ \App\Task::tasksAssigned(Auth::user(), $project->id)->count() }}</a>
+                        href="{{ route('tasks.index', [ 'p' => $project->id, 'filter'=>['target $', 'status active']]) }}">{{ \App\Task::tasksAssigned(Auth::user(), $project->id)->count() }}</a>
                 </div>
             </div>
             <div class="row mt-2">

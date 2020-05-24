@@ -6,12 +6,14 @@ use App\Task;
 use Faker\Generator as Faker;
 
 $factory->define(Task::class, function (Faker $faker) {
+    $completed = $faker->boolean() ? $faker->dateTime() : null;
     return [
         'project_id' => \App\Project::all()->random()->id,
-        'user_id' => $faker->boolean() ? \App\User::all()->random()->id : null,
+        'user_id' => \App\User::all()->random()->id,
         'deadline' => '2020-08-31 00:00:01',
         'title' => $faker->sentence(2),
-        'status' => $faker->randomDigit,
+        'status' => $completed ? 9 : $faker->numberBetween(0, 5),
+        'completed' => $completed,
         'content' => $faker->boolean(30) ? '## Testing of a loooooong text
 ---
 

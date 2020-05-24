@@ -1,5 +1,6 @@
 <?php
 
+use App\Task;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -22,18 +23,26 @@ class DatabaseSeeder extends Seeder
             for ($i = 0; $i < rand(5, 30); $i++) {
                 $project->tasks()->save(factory(\App\Task::class)->make());
             }
+            DB::table('user_project')->insert([
+                'user_id' => $project->owner()->id,
+                'project_id' => $project->id
+            ]);
             for ($i = 0; $i < rand(1, 10); $i++) {
                 DB::table('user_project')->insert([
-                    'user_id' => \App\User::all()->where('id', '<>', $project->owner())->random()->id,
+                    'user_id' => \App\User::all()->where('id', '<>', $project->owner()->id)->random()->id,
                     'project_id' => $project->id
                 ]);
             }
         }
 
         foreach (\App\Task::all() as $task) {
+            DB::table('user_task')->insert([
+                'user_id' => Task::owner_of($task)->id,
+                'task_id' => $task->id
+            ]);
             for ($i = 0; $i < rand(0, 5); $i++) {
                 DB::table('user_task')->insert([
-                    'user_id' => \App\User::all()->where('id', '<>', $task->owner())->random()->id,
+                    'user_id' => \App\User::all()->where('id', '<>', Task::owner_of($task))->random()->id,
                     'task_id' => $task->id
                 ]);
             }

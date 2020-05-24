@@ -108,15 +108,9 @@
                 <!-- Sidebar Links -->
                 <ul class="list-unstyled components">
                     <li class="{{ ($active_page ?? '') == 'home' ? 'active' : '' }}"><a href="{{ route('main') }}">Home</a></li>
-                    <li class="{{ ($active_page ?? '') == 'project' ? 'active' : '' }}">
-                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Projects</a>
-                        <ul class="collapse list-unstyled" id="homeSubmenu">
-                            <li><a href="{{ route('projects.create') }}">New</a></li>
-                            <li><a href="{{ route('projects.index') }}">See all</a></li>
-                        </ul>
-                    <li class="{{ ($active_page ?? '') == 'calendar' ? 'active' : '' }}"><a href="#">Calendar</a></li>
+                    <li class="{{ ($active_page ?? '') == 'project' ? 'active' : '' }}"><a href="{{ route('projects.index') }}">Projects</a></li>
+                    <li class="{{ ($active_page ?? '') == 'inbox' ? 'active' : '' }}"><a href="{{ route('user.inbox') }}">Messages</a></li>
                     <li class="{{ ($active_page ?? '') == 'task' ? 'active' : '' }}"><a href="#">Tasks</a></li>
-                    <li class="{{ ($active_page ?? '') == 'contact' ? 'active' : '' }}"><a href="#">Contacts</a></li>
                 </ul>
             </nav>
         @endauth
